@@ -1,0 +1,133 @@
+[
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "GetMembers",
+    "RelativePath": "api/members/members",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "CreateMember",
+    "RelativePath": "api/members/members",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "MemberDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "GetMember",
+    "RelativePath": "api/members/members/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "UpdateMember",
+    "RelativePath": "api/members/members/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "MemberDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "DeleteMember",
+    "RelativePath": "api/members/members/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "Calculate",
+    "RelativePath": "api/members/members/calc",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "occupationCode",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "death",
+        "Type": "System.Decimal",
+        "IsRequired": false
+      },
+      {
+        "Name": "age",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "GetOccupations",
+    "RelativePath": "api/members/occupations",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "premium.Api.Controllers.premiumController",
+    "Method": "GetOccupation",
+    "RelativePath": "api/members/occupations/{code}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
