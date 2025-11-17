@@ -1,0 +1,131 @@
+﻿<div class="container" style="max-width:900px;margin:24px auto;padding:16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+    <h2 style="margin-bottom:12px;">Premium Calculator</h2>
+
+    <!-- Template-driven form -->
+    <form #memberForm="ngForm" (ngSubmit)="save()" novalidate>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <!-- Name -->
+            <div>
+                <label for="name">Name</label><br />
+                <input id="name" name="name" required [(ngModel)]="model.name"
+                       #name="ngModel"
+                       class="input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;"
+                       placeholder="Full name" />
+                <div *ngIf="name.invalid && name.touched" style="color:#b00020;font-size:12px;margin-top:4px;">
+                    Name is required.
+                </div>
+            </div>
+
+            <!-- Age Next Birthday -->
+            <div>
+                <label for="ageNextBirthday">Age Next Birthday</label><br />
+                <input id="ageNextBirthday" name="ageNextBirthday" required type="number" min="0"
+                       [(ngModel)]="model.ageNextBirthday"
+                       #age="ngModel"
+                       class="input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;"
+                       placeholder="e.g. 30" />
+                <div *ngIf="age.invalid && age.touched" style="color:#b00020;font-size:12px;margin-top:4px;">
+                    Enter valid age.
+                </div>
+            </div>
+
+            <!-- Date of Birth (MM/YYYY) -->
+            <div>
+                <label for="dob">Date of Birth (MM/YYYY)</label><br />
+                <input id="dob" name="dateOfBirthMMYYYY" required
+                       pattern="^\\d{2}\\/\\d{4}$"
+                       [(ngModel)]="model.dateOfBirthMMYYYY"
+                       #dob="ngModel"
+                       (input)="formatDob($event)"
+                       class="input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;"
+                       placeholder="MM/YYYY" />
+                <div *ngIf="dob.invalid && dob.touched" style="color:#b00020;font-size:12px;margin-top:4px;">
+                    Use MM/YYYY format.
+                </div>
+            </div>
+
+            <!-- Occupation -->
+            <div>
+                <label for="occupationCode">Occupation</label><br />
+                <select id="occupationCode" name="occupationCode" required
+                        [(ngModel)]="model.occupationCode"
+                        (change)="onOccupationChange()"
+                        #occ="ngModel"
+                        class="input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;">
+                    <option value="">-- Select occupation --</option>
+                    <option *ngFor="let o of occupations" [value]="o.code ?? o.Code">
+                        {{ (o.displayName ?? o.DisplayName) }} ({{ (o.rating ?? o.Rating) }})
+                    </option>
+                </select>
+                <div *ngIf="occ.invalid && occ.touched" style="color:#b00020;font-size:12px;margin-top:4px;">
+                    Occupation is required.
+                </div>
+            </div>
+
+            <!-- Death Sum Insured -->
+            <div>
+                <label for="deathSumInsured">Death — Sum Insured</label><br />
+                <input id="deathSumInsured" name="deathSumInsured" required type="number" min="0" step="0.01"
+                       [(ngModel)]="model.deathSumInsured"
+                       #death="ngModel"
+                       class="input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px;"
+                       placeholder="e.g. 100000" />
+                <div *ngIf="death.invalid && death.touched" style="color:#b00020;font-size:12px;margin-top:4px;">
+                    Enter valid sum insured.
+                </div>
+            </div>
+
+            <!-- placeholder for layout balance -->
+            <div></div>
+        </div>
+
+        <!-- Actions -->
+        <div style="margin-top:16px;display:flex;gap:12px;align-items:center;">
+            <button type="submit"
+                    [disabled]="!memberForm.form.valid || saving"
+                    style="padding:10px 16px;border:none;background:#1976d2;color:white;border-radius:6px;cursor:pointer;">
+                {{ saving ? 'Saving...' : 'Save Member' }}
+            </button>
+
+            <button type="button" (click)="resetForm()" style="padding:10px 12px;border:1px solid #ccc;border-radius:6px;background:white;cursor:pointer;">
+                Reset
+            </button>
+
+            <div *ngIf="saving" style="font-size:13px;color:#666;margin-left:8px;">Working…</div>
+        </div>
+    </form>
+
+    <!-- Monthly premium display -->
+    <div style="margin-top:20px;padding:12px;border-top:1px solid #eee;">
+        <h3 style="margin:0 0 8px 0;">Monthly Premium</h3>
+        <div style="font-size:20px;font-weight:700;">
+            {{ monthlyPremium !== null ? (monthlyPremium | currency:'INR':'symbol':'1.2-2') : '—' }}
+        </div>
+        <div style="font-size:12px;color:#666;margin-top:6px;">
+            Premium recalculates when <strong>Occupation</strong> is changed (Age & Death Sum must be filled).
+        </div>
+    </div>
+
+    <!-- Optional: list of saved members (if you implement) -->
+    <div *ngIf="members?.length" style="margin-top:18px;">
+        <h4 style="margin-bottom:8px;">Saved Members</h4>
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="text-align:left;border-bottom:1px solid #eee;">
+                    <th style="padding:6px;">Name</th>
+                    <th style="padding:6px;">Age</th>
+                    <th style="padding:6px;">Occupation</th>
+                    <th style="padding:6px;">Monthly Premium</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let m of members">
+                    <td style="padding:6px;">{{m.name}}</td>
+                    <td style="padding:6px;">{{m.ageNextBirthday}}</td>
+                    <td style="padding:6px;">{{m.occupation?.displayName ?? m.occupationCode}}</td>
+                    <td style="padding:6px;">{{ m.monthlyPremium | currency:'INR':'symbol':'1.2-2' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
